@@ -50,7 +50,7 @@
                         <a href="{{ route('about') }}" class="nav-item nav-link">About</a>
                         <a href="{{ route('service') }}" class="nav-item nav-link">Service</a>
                         <a href="{{ route('project') }}" class="nav-item nav-link">Project</a>
-                        <a href="{{ route('blogs.index') }}" class="nav-item nav-link">Blog</a>
+                        <a href="{{ route('posts.index') }}" class="nav-item nav-link">Post</a>
                         <a href="{{ route('contact') }}" class="nav-item nav-link">Contact</a>
                     </div>
                     <a href="" class="btn btn-primary mr-3 d-none d-lg-block">Get A Quote</a>

@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +14,7 @@ Route::controller(PageController::class)->group(function () {
 });
 
 Route::resources([
-  'blogs' => BlogController::class,
+  'posts' => PostController::class,
 ]);
 
 Route::get('users', [UserController::class, 'index']);
