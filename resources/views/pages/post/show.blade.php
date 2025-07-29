@@ -1,6 +1,6 @@
-<x-layouts.layout>
+<x-layouts.layout title="Blog - {{ $post->title }}">
     <!-- Page Header Start -->
-    <x-page-header title="Singe blog" />
+    <x-page-header title="Single blog" postTitle="{{ $post->title }}" />
     <!-- Page Header End -->
 
 
@@ -9,74 +9,44 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
+                    <div class="d-flex justify-content-between mb-3">
+                        <a class="text-secondary text-uppercase font-weight-medium" href="{{ route('posts.index') }}">Back
+                            to posts</a>
+
+                        <div class="d-flex align-items-center gap-2">
+                            <a class="btn btn-primary mr-2" href="{{ route('posts.edit', $post->id) }}">Edit Post</a>
+                            <form class="m-0" action="{{ route('posts.destroy', $post->id) }}" method="POST"
+                                onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger" type="submit">Delete Post</button>
+                            </form>
+                        </div>
+                    </div>
                     <div class="mb-5">
                         <div class="d-flex mb-2">
                             <a class="text-secondary text-uppercase font-weight-medium" href="">Admin</a>
                             <span class="text-primary px-2">|</span>
                             <a class="text-secondary text-uppercase font-weight-medium" href="">Cleaning</a>
                             <span class="text-primary px-2">|</span>
-                            <a class="text-secondary text-uppercase font-weight-medium" href="">January 01,
-                                2045</a>
+                            <a class="text-secondary text-uppercase font-weight-medium"
+                                href="">{{ $post->created_at->format('F d, Y') }}</a>
                         </div>
-                        <h1 class="section-title mb-3">Amet sit kasd ipsum lorem clita ipsum duo clita</h1>
+                        <h1 class="section-title mb-3">{{ $post->title }}</h1>
                     </div>
 
                     <div class="mb-5">
-                        <img class="img-fluid rounded w-100 mb-4" src="img/carousel-1.jpg" alt="Image">
-                        <p>Sadipscing labore amet rebum est et justo gubergren. Et eirmod ipsum sit diam ut magna lorem.
-                            Nonumy vero labore lorem sanctus rebum et lorem magna kasd, stet amet magna accusam
-                            consetetur
-                            eirmod. Kasd accusam sit ipsum sadipscing et at at sanctus et. Ipsum sit gubergren dolores
-                            et,
-                            consetetur justo invidunt at et aliquyam ut et vero clita. Diam sea sea no sed dolores diam
-                            nonumy, gubergren sit stet no diam kasd vero.</p>
-                        <p>Voluptua est takimata stet invidunt sed rebum nonumy stet, clita aliquyam dolores vero stet
-                            consetetur elitr takimata rebum sanctus. Sit sed accusam stet sit nonumy kasd diam dolores,
-                            sanctus lorem kasd duo dolor dolor vero sit et. Labore ipsum duo sanctus amet eos et.
-                            Consetetur
-                            no sed et aliquyam ipsum justo et, clita lorem sit vero amet amet est dolor elitr, stet et
-                            no
-                            diam sit. Dolor erat justo dolore sit invidunt.</p>
-                        <h2 class="mb-4">Est dolor lorem et ea</h2>
-                        <img class="img-fluid rounded w-50 float-left mr-4 mb-3" src="img/blog-1.jpg" alt="Image">
-                        <p>Diam dolor est labore duo invidunt ipsum clita et, sed et lorem voluptua tempor invidunt at
-                            est
-                            sanctus sanctus. Clita dolores sit kasd diam takimata justo diam lorem sed. Magna amet sed
-                            rebum
-                            eos. Clita no magna no dolor erat diam tempor rebum consetetur, sanctus labore sed nonumy
-                            diam
-                            lorem amet eirmod. No at tempor sea diam kasd, takimata ea nonumy elitr sadipscing gubergren
-                            erat. Gubergren at lorem invidunt sadipscing rebum sit amet ut ut, voluptua diam dolores at
-                            sadipscing stet. Clita dolor amet dolor ipsum vero ea ea eos. Invidunt sed diam dolores
-                            takimata
-                            dolor dolore dolore sit. Sit ipsum erat amet lorem et, magna sea at sed et eos. Accusam
-                            eirmod
-                            kasd lorem clita sanctus ut consetetur et. Et duo tempor sea kasd clita ipsum et. Takimata
-                            kasd
-                            diam justo est eos erat aliquyam et ut. Ea sed sadipscing no justo et eos labore, gubergren
-                            ipsum magna dolor lorem dolore, elitr aliquyam takimata sea kasd dolores diam, amet et est
-                            accusam labore eirmod vero et voluptua. Amet labore clita duo et no. Rebum voluptua magna
-                            eos
-                            magna, justo gubergren labore sit voluptua eos.</p>
-                        <h3 class="mb-4">Est dolor lorem et ea</h3>
-                        <img class="img-fluid rounded w-50 float-right ml-4 mb-3" src="img/blog-2.jpg" alt="Image">
-                        <p>Diam dolor est labore duo invidunt ipsum clita et, sed et lorem voluptua tempor invidunt at
-                            est
-                            sanctus sanctus. Clita dolores sit kasd diam takimata justo diam lorem sed. Magna amet sed
-                            rebum
-                            eos. Clita no magna no dolor erat diam tempor rebum consetetur, sanctus labore sed nonumy
-                            diam
-                            lorem amet eirmod. No at tempor sea diam kasd, takimata ea nonumy elitr sadipscing gubergren
-                            erat. Gubergren at lorem invidunt sadipscing rebum sit amet ut ut, voluptua diam dolores at
-                            sadipscing stet. Clita dolor amet dolor ipsum vero ea ea eos. Invidunt sed diam dolores
-                            takimata
-                            dolor dolore dolore sit. Sit ipsum erat amet lorem et, magna sea at sed et eos. Accusam
-                            eirmod
-                            kasd lorem clita sanctus ut consetetur et. Et duo tempor sea kasd clita ipsum et. Takimata
-                            kasd
-                            diam justo est eos erat aliquyam et ut. Ea sed sadipscing no justo et eos labore, gubergren
-                            ipsum magna dolor lorem dolore, elitr aliquyam takimata sea kasd dolores diam, amet et est
-                            accusam labore eirmod vero et voluptua. Amet labore clita duo et no.</p>
+                        {{-- <img class="img-fluid rounded w-100 mb-4" src="img/carousel-1.jpg" alt="Image"> --}}
+                        <p>
+                            {{ $post->description }}
+                        </p>
+                        {{-- <img class="img-fluid rounded w-50 float-left mr-4 mb-3" src="images/blog-1.jpg" alt="Image"> --}}
+                        <img class="img-fluid rounded w-100" src="{{ asset('storage/' . $post->photo) }}"
+                            alt="{{ $post->title }}">
+
+                        <p>
+                            {{ $post->content }}
+                        </p>
                     </div>
 
                     <div class="mb-5">
@@ -147,7 +117,8 @@
 
                 <div class="col-lg-4 mt-5 mt-lg-0">
                     <div class="d-flex flex-column text-center bg-secondary rounded mb-5 py-5 px-4">
-                        <img src="img/user.jpg" class="img-fluid rounded-circle mx-auto mb-3" style="width: 100px;">
+                        <img src="{{ asset('images/user.jpg') }}" class="img-fluid rounded-circle mx-auto mb-3"
+                            style="width: 100px;">
                         <h3 class="text-white mb-3">John Doe</h3>
                         <p class="text-white m-0">Conset elitr erat vero dolor ipsum et diam, eos dolor lorem ipsum,
                             ipsum
@@ -198,81 +169,22 @@
                     </div>
                     <div class="mb-5">
                         <h3 class="mb-4 section-title">Recent Post</h3>
-                        <div class="d-flex align-items-center border-bottom mb-3 pb-3">
-                            <img class="img-fluid rounded" src="img/blog-1.jpg"
-                                style="width: 80px; height: 80px; object-fit: cover;" alt="">
-                            <div class="d-flex flex-column pl-3">
-                                <a class="text-dark mb-2" href="">Elitr diam amet sit elitr magna ipsum ipsum
-                                    dolor</a>
-                                <div class="d-flex">
-                                    <small><a class="text-secondary text-uppercase font-weight-medium"
-                                            href="">Admin</a></small>
-                                    <small class="text-primary px-2">|</small>
-                                    <small><a class="text-secondary text-uppercase font-weight-medium"
-                                            href="">Cleaning</a></small>
+                        @foreach ($recentPosts as $recentPost)
+                            <div class="d-flex align-items-center border-bottom mb-3 pb-3">
+                                <img class="img-fluid rounded" src="{{ asset('storage/' . $recentPost->photo) }}"
+                                    style="width: 80px; height: 80px; object-fit: cover;" alt="">
+                                <div class="d-flex flex-column pl-3">
+                                    <a class="text-dark mb-2" href="">{{ $recentPost->title }}</a>
+                                    <div class="d-flex">
+                                        <small><a class="text-secondary text-uppercase font-weight-medium"
+                                                href="">Admin</a></small>
+                                        <small class="text-primary px-2">|</small>
+                                        <small><a class="text-secondary text-uppercase font-weight-medium"
+                                                href="">Cleaning</a></small>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="d-flex align-items-center border-bottom mb-3 pb-3">
-                            <img class="img-fluid rounded" src="img/blog-2.jpg"
-                                style="width: 80px; height: 80px; object-fit: cover;" alt="">
-                            <div class="d-flex flex-column pl-3">
-                                <a class="text-dark mb-2" href="">Elitr diam amet sit elitr magna ipsum ipsum
-                                    dolor</a>
-                                <div class="d-flex">
-                                    <small><a class="text-secondary text-uppercase font-weight-medium"
-                                            href="">Admin</a></small>
-                                    <small class="text-primary px-2">|</small>
-                                    <small><a class="text-secondary text-uppercase font-weight-medium"
-                                            href="">Cleaning</a></small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center border-bottom mb-3 pb-3">
-                            <img class="img-fluid rounded" src="img/blog-3.jpg"
-                                style="width: 80px; height: 80px; object-fit: cover;" alt="">
-                            <div class="d-flex flex-column pl-3">
-                                <a class="text-dark mb-2" href="">Elitr diam amet sit elitr magna ipsum ipsum
-                                    dolor</a>
-                                <div class="d-flex">
-                                    <small><a class="text-secondary text-uppercase font-weight-medium"
-                                            href="">Admin</a></small>
-                                    <small class="text-primary px-2">|</small>
-                                    <small><a class="text-secondary text-uppercase font-weight-medium"
-                                            href="">Cleaning</a></small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center border-bottom mb-3 pb-3">
-                            <img class="img-fluid rounded" src="img/blog-1.jpg"
-                                style="width: 80px; height: 80px; object-fit: cover;" alt="">
-                            <div class="d-flex flex-column pl-3">
-                                <a class="text-dark mb-2" href="">Elitr diam amet sit elitr magna ipsum ipsum
-                                    dolor</a>
-                                <div class="d-flex">
-                                    <small><a class="text-secondary text-uppercase font-weight-medium"
-                                            href="">Admin</a></small>
-                                    <small class="text-primary px-2">|</small>
-                                    <small><a class="text-secondary text-uppercase font-weight-medium"
-                                            href="">Cleaning</a></small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid rounded" src="img/blog-2.jpg"
-                                style="width: 80px; height: 80px; object-fit: cover;" alt="">
-                            <div class="d-flex flex-column pl-3">
-                                <a class="text-dark mb-2" href="">Elitr diam amet sit elitr magna ipsum ipsum
-                                    dolor</a>
-                                <div class="d-flex">
-                                    <small><a class="text-secondary text-uppercase font-weight-medium"
-                                            href="">Admin</a></small>
-                                    <small class="text-primary px-2">|</small>
-                                    <small><a class="text-secondary text-uppercase font-weight-medium"
-                                            href="">Cleaning</a></small>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     <div class="mb-5">
                         <img src="img/blog-2.jpg" alt="" class="img-fluid rounded">

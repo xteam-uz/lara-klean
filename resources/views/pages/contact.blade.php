@@ -1,4 +1,5 @@
-<x-layouts.layout>
+<x-layouts.layout title="Contact">
+
     <!-- Page Header Start -->
     <x-page-header title="Contact" />
     <!-- Page Header End -->

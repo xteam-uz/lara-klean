@@ -1,6 +1,6 @@
 <html lang="en">
 
-<x-head />
+<x-head :title="$title ?? null" />
 
 <body>
 

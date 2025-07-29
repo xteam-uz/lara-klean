@@ -1,4 +1,4 @@
-<x-layouts.layout>
+<x-layouts.layout title="Service">
 
     <!-- Page Header Start -->
     <x-page-header title='Service' />

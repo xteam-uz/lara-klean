@@ -2,74 +2,90 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(): View
     {
-        $post = Post::find(1);
+        $posts = Post::orderBy('id', 'desc')->paginate(6);
 
-        // $post->delete();
-        Post::withTrashed()
-            ->where('id', 1)
-            ->restore();
-
-        dd($post);
-
-        return view('pages.post.index');
+        return view('pages.post.index', compact('posts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(): View
     {
-        //
+        return view('pages.post.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        //
+        if ($request->hasFile('photo')) {
+            $name = $request->file('photo')->getClientOriginalName();
+            $path = $request->file('photo')->storeAs('post-photos', $name);
+        } else {
+            $path = null;
+        }
+
+        $post = Post::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'content' => $request->content,
+            'photo' => $path
+        ]);
+
+        return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Post $post): View
     {
-        return view('pages.post.show');
+        $recentPosts = Post::where('id', '!=', $post->id)
+            ->latest()
+            ->take(5)
+            ->get();
+        return view('pages.post.show', compact('post', 'recentPosts'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Post $post): View
     {
-        //
+        return view('pages.post.edit', compact('post'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        if ($request->hasFile('photo')) {
+            if ($post->photo && Storage::exists($post->photo)) {
+                Storage::delete($post->photo);
+            }
+            $name = $request->file('photo')->getClientOriginalName();
+            $photoPath = $request->file('photo')->storeAs('post-photos', $name);
+        } else {
+            $photoPath = $post->photo;
+        }
+        $post->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'content' => $request->content,
+            'photo' => $photoPath
+        ]);
+
+        return redirect()
+            ->route('posts.show', $post->id)
+            ->with('success', 'Post updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        //
+        if ($post->photo && Storage::exists($post->photo)) {
+            Storage::delete($post->photo);
+        }
+
+        $post->delete();
+
+        return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
     }
 }
