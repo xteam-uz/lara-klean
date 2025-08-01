@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -19,7 +22,11 @@ class PostController extends Controller
 
     public function create(): View
     {
-        return view('pages.post.create');
+        $tags = Tag::all();
+
+        $categories = Category::all();
+
+        return view('pages.post.create', compact('categories', 'tags'));
     }
 
     public function store(StorePostRequest $request)
@@ -31,23 +38,40 @@ class PostController extends Controller
             $path = null;
         }
 
+        // dd($request);
         $post = Post::create([
             'title' => $request->title,
             'description' => $request->description,
             'content' => $request->content,
-            'photo' => $path
+            'photo' => $path,
+            'user_id' => 1,
+            'category_id' => $request->category_id,
         ]);
+
+        if ($request->has('tags')) {
+            $post->tags()->attach($request->tags);
+        }
 
         return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }
 
     public function show(Post $post): View
     {
+        // Load the post with its user and category
         $recentPosts = Post::where('id', '!=', $post->id)
             ->latest()
             ->take(5)
             ->get();
-        return view('pages.post.show', compact('post', 'recentPosts'));
+
+        // Randomly select 5 categories with their post counts
+        $categories = Category::withCount('posts')->inRandomOrder()->limit(5)->get();
+
+        // Randomly select 5 tags with their post counts
+        // $tags = Tag::withCount('posts')->inRandomOrder()->limit(5)->get();
+
+        // dd($post->tags);
+
+        return view('pages.post.show', compact('post', 'recentPosts', 'categories'));
     }
 
     public function edit(Post $post): View

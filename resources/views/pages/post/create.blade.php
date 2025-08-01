@@ -43,6 +43,31 @@
                             <textarea class="form-control p-4 mb-4" name="content" rows="6" placeholder="Post Content" required="required"
                                 data-validation-required-message="Please enter content">{{ old('content') }}</textarea>
                         </div>
+
+                        <div class="control-group">
+                            <label for="category_id">Choose a category:</label>
+
+                            <select name="category_id" id="category_id" required>
+                                <option value="">-- Choose a category --</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}"
+                                        {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="block">
+                                <span class="text-gray-700">Tag</span>
+                                <select name="tags[]" class="block w-full mt-1" multiple>
+                                    @foreach ($tags as $tag)
+                                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                    @endforeach
+                                </select>
+                            </label>
+                        </div>
                         <div>
                             <button class="btn btn-primary btn-block py-3 px-5" type="submit"
                                 id="sendMessageButton">Create post</button>
@@ -53,3 +78,13 @@
         </div>
     </div>
 </x-layouts.layout>
+
+<script>
+    var textarea = document.querySelector('textarea[name=tags]');
+    new Tagify(textarea, {
+        whitelist: ['Laravel', 'PHP', 'Vue', 'React'], // ixtiyoriy takliflar
+        dropdown: {
+            enabled: 0 // 0 — yozilganda avtomatik ochilmaydi, 1 — harfi yozilganda taklif ochiladi
+        }
+    });
+</script>

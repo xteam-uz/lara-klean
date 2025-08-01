@@ -20,8 +20,9 @@ class PostFactory extends Factory
             'title' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(),
             'content' => $this->faker->text(1000),
-            'photo' => 'blog-1.jpg',  // Foydalanuvchi tomonidan yuklangan rasm URL manzili
-            // created_at va updated_at avtomatik to‘ldiriladi
+            'photo' => 'blog-1.jpg',
+            'user_id' => $this->faker->numberBetween(1, 10),
+            'category_id' => $this->faker->numberBetween(1, 5),
         ];
     }
 }

@@ -20,5 +20,11 @@
     <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <link href="{{ asset('lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
 
+    <!-- Tagify styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css">
+
+    <!-- Tagify script -->
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

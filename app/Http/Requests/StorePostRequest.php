@@ -8,6 +8,10 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property string $title
  * @property string $description
  * @property string $content
+ * @property string $tags
+ * @property method has (string $key): bool
+ * @property number $user_id
+ * @property number $category_id
  * @property \Illuminate\Http\UploadedFile|null $photo
  * @method bool hasFile(string $key)
  * @method \Illuminate\Http\UploadedFile|null file(string $key)
