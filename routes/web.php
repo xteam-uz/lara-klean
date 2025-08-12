@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
@@ -14,7 +15,9 @@ Route::controller(PageController::class)->group(function () {
 });
 
 Route::resources([
+  'users' => UserController::class,
   'posts' => PostController::class,
+  'comments' => CommentController::class,
 ]);
 
-Route::get('users', [UserController::class, 'index']);
+// Route::get('users', [UserController::class, 'index']);
