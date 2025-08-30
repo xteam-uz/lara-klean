@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Comment;
 use App\Models\Post;
+use App\Policies\CommentPolicy;
 use App\Policies\PostPolicy;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
@@ -29,7 +31,8 @@ class AppServiceProvider extends ServiceProvider
 
         // Policies
         Gate::policies([
-            Post::class => PostPolicy::class
+            Post::class => PostPolicy::class,
+            Comment::class => CommentPolicy::class,
         ]);
     }
 }

@@ -57,14 +57,29 @@
                     <div class="mb-5">
                         <h3 class="mb-4 section-title">{{ $post->comments()->count() }} Comments</h3>
                         @foreach ($post->comments as $comment)
-                            <div class="media mb-4">
+                            <div class="media mb-4" id="comment-{{ $comment->id }}">
                                 <img src="{{ asset('images/about.jpg') }}" alt="Image"
                                     class="img-fluid rounded-circle mr-3 mt-1" style="width: 45px;">
                                 <div class="media-body">
-                                    <h6>{{ $comment->user->name }}
+                                    <h6>
+                                        {{ $comment->user->name }}
                                         <small><i>{{ $comment->created_at->format('F d, Y') }}</i></small>
+
+                                        {{-- Edit/Delete faqat o‘z commentiga --}}
+                                        @can('update', $comment)
+                                            <a href="javascript:void(0);" class="text-primary ml-2 edit-comment"
+                                                data-id="{{ $comment->id }}">
+                                                ✏️
+                                            </a>
+                                        @endcan
+                                        @can('delete', $comment)
+                                            <a href="javascript:void(0);" class="text-danger ml-2 delete-comment"
+                                                data-id="{{ $comment->id }}">
+                                                🗑️
+                                            </a>
+                                        @endcan
                                     </h6>
-                                    <p>{{ $comment->content }}</p>
+                                    <p class="comment-content">{{ $comment->content }}</p>
                                 </div>
                             </div>
                         @endforeach
@@ -74,21 +89,6 @@
                         <h3 class="mb-4 section-title">Leave a comment</h3>
                         <form action="{{ route('comments.store') }}" method="POST">
                             @csrf
-                            {{-- <div class="form-row">
-                                <div class="form-group col-sm-6">
-                                    <label for="name">Name *</label>
-                                    <input type="text" class="form-control" id="name">
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="email">Email *</label>
-                                    <input type="email" class="form-control" id="email">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="website">Website</label>
-                                <input type="url" class="form-control" id="website">
-                            </div> --}}
-
                             <div class="form-group">
                                 <label for="message">Message *</label>
                                 <textarea name="content" cols="30" rows="5" class="form-control"></textarea>
@@ -182,4 +182,78 @@
     </div>
     <!-- Detail End -->
 
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Edit tugmasi
+            document.querySelectorAll(".edit-comment").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const id = btn.dataset.id;
+                    const commentDiv = document.querySelector(`#comment-${id}`);
+                    const contentEl = commentDiv.querySelector(".comment-content");
+                    const oldContent = contentEl.innerText;
+
+                    // Textarea qo‘yib qo‘yamiz
+                    contentEl.outerHTML = `
+                <div class="edit-form">
+                    <textarea class="form-control mb-2" id="edit-textarea-${id}">${oldContent}</textarea>
+                    <button class="btn btn-sm btn-success save-edit" data-id="${id}">Save</button>
+                    <button class="btn btn-sm btn-danger cancel-edit" data-id="${id}">Cancel</button>
+                </div>
+            `;
+
+                    // Cancel
+                    commentDiv.querySelector(".cancel-edit").addEventListener("click", () => {
+                        commentDiv.querySelector(".edit-form").outerHTML =
+                            `<p class="comment-content">${oldContent}</p>`;
+                    });
+
+                    // Save
+                    commentDiv.querySelector(".save-edit").addEventListener("click", async () => {
+                        const newContent = commentDiv.querySelector(
+                            `#edit-textarea-${id}`).value;
+
+                        let res = await fetch(`/comments/${id}`, {
+                            method: "PUT",
+                            headers: {
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                content: newContent
+                            })
+                        });
+
+                        let data = await res.json();
+
+                        if (data.success) {
+                            commentDiv.querySelector(".edit-form").outerHTML =
+                                `<p class="comment-content">${data.comment.content}</p>`;
+                        }
+                    });
+                });
+            });
+
+            // Delete tugmasi
+            document.querySelectorAll(".delete-comment").forEach(btn => {
+                btn.addEventListener("click", async () => {
+                    const id = btn.dataset.id;
+
+                    if (!confirm("Delete this comment?")) return;
+
+                    let res = await fetch(`/comments/${id}`, {
+                        method: "DELETE",
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        }
+                    });
+
+                    let data = await res.json();
+
+                    if (data.success) {
+                        document.querySelector(`#comment-${id}`).remove();
+                    }
+                });
+            });
+        });
+    </script>
 </x-layouts.layout>
