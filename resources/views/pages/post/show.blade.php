@@ -3,7 +3,6 @@
     <x-page-header title="Single blog" postTitle="{{ $post->title }}" />
     <!-- Page Header End -->
 
-
     <!-- Detail Start -->
     <div class="container-fluid py-5">
         <div class="container">
@@ -14,13 +13,16 @@
                             to posts</a>
 
                         <div class="d-flex align-items-center gap-2">
-                            <a class="btn btn-primary mr-2" href="{{ route('posts.edit', $post->id) }}">Edit Post</a>
-                            <form class="m-0" action="{{ route('posts.destroy', $post->id) }}" method="POST"
-                                onsubmit="return confirm('Are you sure you want to delete this post?');">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-danger" type="submit">Delete Post</button>
-                            </form>
+                            @canany(['update', 'delete'], $post)
+                                <a class="btn btn-primary mr-2" href="{{ route('posts.edit', $post->id) }}">Edit
+                                    Post</a>
+                                <form class="m-0" action="{{ route('posts.destroy', $post->id) }}" method="POST"
+                                    onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger" type="submit">Delete Post</button>
+                                </form>
+                            @endcan
                         </div>
                     </div>
                     <div class="mb-5">
@@ -159,7 +161,7 @@
                     <div class="mb-5">
                         <h3 class="mb-4 section-title">Tag Cloud</h3>
                         <div class="d-flex flex-wrap m-n1">
-                            @foreach ($post->tags as $tag)
+                            @foreach ($tags as $tag)
                                 <a href="" class="btn btn-outline-secondary m-1">{{ $tag->name }}</a>
                             @endforeach
                         </div>

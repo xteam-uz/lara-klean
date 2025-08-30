@@ -9,48 +9,51 @@
             <div class="col-lg-12 mb-5 mb-lg-0">
                 <div class="contact-form">
                     <div id="success"></div>
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+
+                    <x-form-errors />
                     <form action="{{ route('posts.update', ['post' => $post->id]) }}" method="POST"
                         enctype="multipart/form-data">
-                        @method('PATCH')
                         @csrf
+                        @method('PATCH')
+
                         <div class="form-row">
-                            <div class="col-sm-6 control-group">
-                                <input type="text" name="title" value="{{ $post->title }}"
-                                    class="form-control p-4 mb-4" placeholder="Post Title" required="required"
-                                    data-validation-required-message="Please enter title" />
+                            <div class="form-group col-sm-6">
+                                <label for="title">Post Title</label>
+                                <input type="text" name="title" id="title"
+                                    value="{{ old('title', $post->title) }}" class="form-control p-4 mb-3"
+                                    placeholder="Enter post title" required>
                             </div>
-                            <div class="col-sm-6 control-group">
-                                <input type="text" name="description" value="{{ $post->description }}"
-                                    class="form-control p-4 mb-4" placeholder="Post Description" required="required"
-                                    data-validation-required-message="Please enter description" />
+
+                            <div class="form-group col-sm-6">
+                                <label for="description">Post Description</label>
+                                <input type="text" name="description" id="description"
+                                    value="{{ old('description', $post->description) }}" class="form-control p-4 mb-3"
+                                    placeholder="Enter post description" required>
                             </div>
                         </div>
-                        <div class="control-group">
-                            <input type="file" name="photo"
-                                class="form-control px-4
-                                mb-4"
-                                placeholder="Post Image" />
+
+                        <div class="form-group">
+                            <label for="photo">Post Image</label>
+                            <div class="custom-file mb-3">
+                                <input type="file" name="photo" id="photo" class="custom-file-input">
+                                <label class="custom-file-label" for="photo">Choose file</label>
+                            </div>
+                            @if ($post->photo)
+                                <small class="form-text text-muted">
+                                    Current image: <strong>{{ $post->photo }}</strong>
+                                </small>
+                            @endif
                         </div>
-                        <div class="control-group">
-                            <textarea class="form-control p-4 mb-4" name="content" rows="6" placeholder="Post Content" required="required"
-                                data-validation-required-message="Please enter content">
-                                {{ $post->content }}
-                              </textarea>
+
+                        <div class="form-group">
+                            <label for="content">Post Content</label>
+                            <textarea class="form-control p-4 mb-3" name="content" id="content" rows="6" placeholder="Enter post content"
+                                required>{{ old('content', $post->content) }}</textarea>
                         </div>
-                        <div class="form-group d-flex justify-content-between align-items-center">
-                            <button class="btn btn-success py-3 px-5" type="submit" id="sendMessageButton">Update
-                                post</button>
-                            <a href="{{ route('posts.show', $post->id) }}" class="btn btn-danger py-3 px-5 m-0"
-                                type="submit" id="sendMessageButton">Cancel</a>
+
+                        <div class="form-group d-flex justify-content-between">
+                            <button class="btn btn-success py-2 px-4" type="submit">Update Post</button>
+                            <a href="{{ route('posts.show', $post->id) }}" class="btn btn-danger py-2 px-4">Cancel</a>
                         </div>
                     </form>
                 </div>

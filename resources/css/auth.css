@@ -1,0 +1,18 @@
+.auth-btn-color {
+    background-color: #0e1c36;
+    color: #fff;
+}
+
+.auth-profile-image-pic {
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+}
+
+.auth-cardbody-color {
+    background-color: #ebf2fa;
+}
+
+.auth-link {
+    text-decoration: none;
+}

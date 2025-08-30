@@ -12,6 +12,20 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::factory(10)->create();
+        $categories = [
+            'Web development',
+            'Frontedn',
+            'Backend',
+            'Mobile development',
+            'Desktop development',
+            'Game development',
+            'UI/UX design'
+        ];
+
+        foreach ($categories as $category) {
+            Category::create([
+                'name' => $category,
+            ]);
+        }
     }
 }

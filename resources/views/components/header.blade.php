@@ -53,7 +53,35 @@
                         <a href="{{ route('posts.index') }}" class="nav-item nav-link">Post</a>
                         <a href="{{ route('contact') }}" class="nav-item nav-link">Contact</a>
                     </div>
-                    <a href="{{ route('posts.create') }}" class="btn btn-primary mr-3 d-none d-lg-block">Create Post</a>
+                    @auth
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#"
+                                    id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                    <i class="fas fa-user-circle fa-lg text-primary mr-2"></i>
+                                    <span class="font-weight-bold">{{ Auth::user()->name }}</span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="userDropdown">
+                                    <a href="{{ route('posts.create') }}" class="dropdown-item">
+                                        <i class="fas fa-plus mr-2 text-success"></i> Create Post
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <form action="{{ route('logout') }}" method="POST" class="m-0">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                                        </button>
+                                    </form>
+                                </div>
+                            </li>
+                        </ul>
+                    @else
+                        <div class="d-flex">
+                            <a href="{{ route('login') }}" class="btn btn-outline-primary mr-2">Login</a>
+                            <a href="{{ route('register') }}" class="btn btn-primary">Register</a>
+                        </div>
+                    @endauth
                 </div>
             </nav>
         </div>

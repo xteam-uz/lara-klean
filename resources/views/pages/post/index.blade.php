@@ -24,8 +24,8 @@
                             <img class="img-fluid rounded w-100" src="{{ asset('storage/' . $post->photo) }}"
                                 alt="{{ $post->title }}">
                             <div class="blog-date">
-                                <h4 class="font-weight-bold mb-n1">01</h4>
-                                <small class="text-white text-uppercase">Jan</small>
+                                <h4 class="font-weight-bold mb-n1">{{ $post->created_at->format('d') }}</h4>
+                                <small class="text-white text-uppercase">{{ $post->created_at->format('M') }}</small>
                             </div>
                         </div>
                         <div class="d-flex mb-2">
@@ -36,8 +36,13 @@
                                     <span class="text-primary px-2">|</span>
                                 @endif
                             @endforeach
-
                         </div>
+
+                        <div class="d-flex mb-2">
+                            <a class="text-info text-uppercase font-weight-medium"
+                                href="">{{ $post->category->name ?? 'No category' }}</a>
+                        </div>
+
                         <h5 class="font-weight-medium mb-2">{{ $post->title }}</h5>
                         <p class="mb-4">{{ $post->description }}</p>
                         <a class="btn btn-sm btn-primary py-2"

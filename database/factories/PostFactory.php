@@ -21,7 +21,7 @@ class PostFactory extends Factory
             'description' => $this->faker->paragraph(),
             'content' => $this->faker->text(1000),
             'photo' => 'blog-1.jpg',
-            'user_id' => $this->faker->numberBetween(1, 10),
+            'user_id' => 1,
             'category_id' => $this->faker->numberBetween(1, 5),
         ];
     }

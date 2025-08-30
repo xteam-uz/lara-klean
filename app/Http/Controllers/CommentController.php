@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -18,14 +19,8 @@ class CommentController extends Controller
         $post = Post::find($validated['post_id']);
         $post->comments()->create([
             'content' => $validated['content'],
-            'user_id' => 1
+            'user_id' => Auth::id(),
         ]);
-
-        // $comment = Comment::create([
-        //     'content' => $request->content,
-        //     'post_id' => $request->post_id,
-        //     'user_id' => 1
-        // ]);
 
         return redirect()->back();
     }

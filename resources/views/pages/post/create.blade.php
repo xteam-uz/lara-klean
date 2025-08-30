@@ -8,46 +8,43 @@
             <div class="col-lg-12 mb-5 mb-lg-0">
                 <div class="contact-form">
                     <div id="success"></div>
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+
+                    <x-form-errors />
                     <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-row">
-                            <div class="col-sm-6 control-group">
-                                <input type="text" name="title" value="{{ old('title') }}"
+                            <div class="col-sm-6 form-group">
+                                <label for="title" class="font-weight-bold">Enter title:</label>
+                                <input type="text" name="title" id="title" value="{{ old('title') }}"
                                     class="form-control p-4 mb-4" placeholder="Post Title" required="required"
                                     data-validation-required-message="Please enter title" />
                             </div>
-                            <div class="col-sm-6 control-group">
-                                <input type="text" name="description" value="{{ old('description') }}"
-                                    class="form-control p-4 mb-4" placeholder="Post Description" required="required"
+                            <div class="col-sm-6 form-group">
+                                <label for="description" class="font-weight-bold">Enter description:</label>
+                                <input type="text" name="description" id="description"
+                                    value="{{ old('description') }}" class="form-control p-4 mb-4"
+                                    placeholder="Post Description" required="required"
                                     data-validation-required-message="Please enter description" />
 
                             </div>
                         </div>
-                        <div class="control-group">
-                            <input type="file" name="photo"
-                                class="form-control px-4
-                                mb-4"
-                                placeholder="Post Image" />
-
+                        <div class="form-group">
+                            <label for="photo" class="font-weight-bold">Choose a photo:</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="photo" name="photo" required>
+                                <label class="custom-file-label" for="photo">Choose file...</label>
+                            </div>
                         </div>
-                        <div class="control-group">
-                            <textarea class="form-control p-4 mb-4" name="content" rows="6" placeholder="Post Content" required="required"
-                                data-validation-required-message="Please enter content">{{ old('content') }}</textarea>
+                        <div class="form-group">
+                            <label for="content" class="font-weight-bold">Enter post content:</label>
+                            <textarea class="form-control p-4 mb-4" name="content" id="contet" rows="6" placeholder="Post Content"
+                                required="required" data-validation-required-message="Please enter content">{{ old('content') }}</textarea>
                         </div>
 
-                        <div class="control-group">
-                            <label for="category_id">Choose a category:</label>
 
-                            <select name="category_id" id="category_id" required>
+                        <div class="form-group">
+                            <label for="category_id" class="font-weight-bold">Choose a category:</label>
+                            <select name="category_id" id="category_id" class="custom-select" required>
                                 <option value="">-- Choose a category --</option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
@@ -58,16 +55,17 @@
                             </select>
                         </div>
 
-                        <div class="control-group">
-                            <label class="block">
-                                <span class="text-gray-700">Tag</span>
-                                <select name="tags[]" class="block w-full mt-1" multiple>
-                                    @foreach ($tags as $tag)
-                                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                                    @endforeach
-                                </select>
-                            </label>
+                        <div class="form-group">
+                            <label for="tags" class="font-weight-bold">Select Tags:</label>
+                            <select name="tags[]" id="tags" class="custom-select" multiple>
+                                @foreach ($tags as $tag)
+                                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                @endforeach
+                            </select>
+                            <small class="form-text text-muted">Hold <kbd>Ctrl</kbd> (Windows) or <kbd>Cmd</kbd> (Mac)
+                                to select multiple</small>
                         </div>
+
                         <div>
                             <button class="btn btn-primary btn-block py-3 px-5" type="submit"
                                 id="sendMessageButton">Create post</button>
