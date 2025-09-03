@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    use HasFactory;  // SoftDeletes
+    use HasFactory;
 
     protected $fillable = ['title', 'description', 'content', 'photo', 'category_id', 'user_id'];
 

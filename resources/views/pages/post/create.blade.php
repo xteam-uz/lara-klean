@@ -31,7 +31,7 @@
                         <div class="form-group">
                             <label for="photo" class="font-weight-bold">Choose a photo:</label>
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="photo" name="photo" required>
+                                <input type="file" class="custom-file-input" id="photo" name="photo">
                                 <label class="custom-file-label" for="photo">Choose file...</label>
                             </div>
                         </div>

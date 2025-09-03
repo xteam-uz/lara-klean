@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\PostCreated;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
@@ -59,6 +60,8 @@ class PostService
         if ($request->has('tags')) {
             $post->tags()->attach($request->tags);
         }
+
+        PostCreated::dispatch($post);
 
         return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }
