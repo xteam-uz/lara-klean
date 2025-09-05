@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(PageController::class)->group(function () {
@@ -35,4 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
+    Route::get('notifications', [NotificationController::class, 'index'])->name('notification.list');
+    Route::get('notifications/{id}', [NotificationController::class, 'read'])->name('notification.read');
+    Route::delete('notifications', [NotificationController::class, 'destroy'])->name('notification.delete');
 });

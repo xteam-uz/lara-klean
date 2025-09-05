@@ -38,16 +38,19 @@
                         </div>
 
                         <h1 class="section-title mb-3">{{ $post->title }}</h1>
-                    </div>
-
-                    <div class="mb-5">
-                        {{-- <img class="img-fluid rounded w-100 mb-4" src="img/carousel-1.jpg" alt="Image"> --}}
                         <p>
                             {{ $post->description }}
                         </p>
-                        {{-- <img class="img-fluid rounded w-50 float-left mr-4 mb-3" src="images/blog-1.jpg" alt="Image"> --}}
-                        <img class="img-fluid rounded w-100" src="{{ asset('storage/' . $post->photo) }}"
+                    </div>
+
+                    <div class="mb-5">
+                        <img class="img-fluid rounded w-100 mb-4"
+                            src="{{ $post->photo ? asset('storage/' . $post->photo) : 'https://www.dummyimage.com/300x200/000/fff' }}"
                             alt="{{ $post->title }}">
+
+                        {{-- <img class="img-fluid rounded w-50 float-left mr-4 mb-3" src="images/blog-1.jpg" alt="Image"> --}}
+                        {{-- <img class="img-fluid rounded w-100" src="{{ asset('storage/' . $post->photo) }}"
+                            alt="{{ $post->title }}"> --}}
 
                         <p>
                             {{ $post->content }}
@@ -91,7 +94,7 @@
                             @csrf
                             <div class="form-group">
                                 <label for="message">Message *</label>
-                                <textarea name="content" cols="30" rows="5" class="form-control"></textarea>
+                                <textarea name="content" cols="30" rows="5" class="form-control p-4 mb-4"></textarea>
                             </div>
                             <div class="form-group mb-0">
                                 <input type="hidden" name="post_id" value="{{ $post->id }}" />
@@ -103,8 +106,11 @@
 
                 <div class="col-lg-4 mt-5 mt-lg-0">
                     <div class="d-flex flex-column text-center bg-secondary rounded mb-5 py-5 px-4">
-                        <img src="{{ asset('images/user.jpg') }}" class="img-fluid rounded-circle mx-auto mb-3"
-                            style="width: 100px;">
+                        <img class="img-fluid rounded-circle mx-auto mb-3" style="width: 100px;"
+                            src="{{ $post->user->photo ? asset('storage/' . $post->user->photo) : 'https://www.dummyimage.com/500x500/000/fff' }}"
+                            alt="{{ $post->title }}">
+                        {{-- src="{{ asset('images/user.jpg') }}" --}}
+
                         <h3 class="text-white mb-3">{{ $post->user->name }}</h3>
                         <p class="text-white m-0">{{ $post->user->email }}</p>
                     </div>
@@ -137,7 +143,8 @@
                         <h3 class="mb-4 section-title">Recent Post</h3>
                         @foreach ($recentPosts as $recentPost)
                             <div class="d-flex align-items-center border-bottom mb-3 pb-3">
-                                <img class="img-fluid rounded" src="{{ asset('storage/' . $recentPost->photo) }}"
+                                <img class="img-fluid rounded"
+                                    src="{{ $recentPost->photo ? asset('storage/' . $recentPost->photo) : 'https://www.dummyimage.com/300x200/000/fff' }}"
                                     style="width: 80px; height: 80px; object-fit: cover;" alt="">
                                 <div class="d-flex flex-column pl-3">
                                     <a class="text-dark mb-2" href="">{{ $recentPost->title }}</a>

@@ -55,7 +55,9 @@
                         <a href="{{ route('contact') }}" class="nav-item nav-link">Contact</a>
                     </div>
                     @auth
-                        <ul class="navbar-nav">
+
+                        <ul class="navbar-nav d-flex justify-conent-center align-items-center">
+                            {{-- User --}}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle d-flex align-items-center" href="#"
                                     id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -74,6 +76,32 @@
                                             <i class="fas fa-sign-out-alt mr-2"></i> Logout
                                         </button>
                                     </form>
+                                </div>
+                            </li>
+
+                            {{-- Notifications --}}
+                            @props(['notifications' => collect()])
+                            <li class="dropdown">
+                                <a href="{{ route('notification.list') }}" class="btn btn-warning btn-sm dropdown-toggle"
+                                    id="dropdownMenu2" aria-haspopup="true" aria-expanded="false">
+                                    <i class="far fa-bell fa-lg text-primary text-light mr-2"></i>
+                                    <span class="font-weight-bold text-light">
+                                        {{ Auth::user()->unreadNotifications()->count() > 0 ? Auth::user()->unreadNotifications()->count() : '' }}
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right shadow" aria-labelledby="dropdownMenu2">
+                                    @forelse (Auth::user()->unreadNotifications as $notification)
+                                        <a href="{{ route('notification.read', $notification->data['id']) }}"
+                                            class="dropdown-item">
+                                            <span class="text-muted">{{ $notification->created_at }}</span><br />
+                                            <b>"{{ $notification->data['id'] }}.
+                                                {{ $notification->data['title'] }}"</b>
+                                            nomli post yaratildi
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                    @empty
+                                        <div class="dropdown-item">Hozircha yangi bildirishnoma yo'q</div>
+                                    @endforelse
                                 </div>
                             </li>
                         </ul>

@@ -6,9 +6,11 @@ use App\Events\PostCreated;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Notifications\Post\PostCreated as NotifyPostCreated;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -62,6 +64,8 @@ class PostService
         }
 
         PostCreated::dispatch($post);
+
+        Auth::user()->notify(new NotifyPostCreated($post));
 
         return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }
